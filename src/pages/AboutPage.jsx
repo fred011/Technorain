@@ -175,7 +175,7 @@ export default function AboutPage() {
 
         <div className="relative container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
               {[
                 { value: "9+", label: "Years in Business" },
                 { value: "50+", label: "Projects Completed" },
@@ -184,12 +184,12 @@ export default function AboutPage() {
               ].map((stat, index) => (
                 <div
                   key={index}
-                  className="text-center glass-effect rounded-2xl p-8 border border-border/50 hover:border-primary/50 transition-all duration-300 group"
+                  className="text-center glass-effect rounded-2xl p-4 md:p-8 border border-border/50 hover:border-primary/50 transition-all duration-300 group"
                 >
-                  <div className="text-5xl md:text-6xl font-bold text-gradient mb-3 group-hover:scale-110 transition-transform">
+                  <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gradient mb-2 md:mb-3 group-hover:scale-110 transition-transform break-words">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs sm:text-sm text-muted-foreground">
                     {stat.label}
                   </div>
                 </div>
