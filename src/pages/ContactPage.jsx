@@ -1,14 +1,30 @@
 import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, Send, Sparkles, Clock } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  Sparkles,
+  Clock,
+  Loader2,
+  CheckCircle2,
+  XCircle,
+  X,
+} from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import { useState } from "react";
 
 export default function ContactPage() {
   const [result, setResult] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setResult("Sending...");
+
+    setIsSending(true);
+    setResult("");
 
     const formData = new FormData(event.target);
 
@@ -23,14 +39,23 @@ export default function ContactPage() {
       const data = await response.json();
 
       if (data.success) {
+        setIsSuccess(true);
         setResult("Message sent successfully!");
+        setShowModal(true);
         event.target.reset();
       } else {
+        setIsSuccess(false);
         setResult(data.message || "Something went wrong.");
+        setShowModal(true);
       }
     } catch (error) {
       console.error(error);
-      setResult("Unable to send message. Please try again.");
+
+      setIsSuccess(false);
+      setResult("Unable to send your message. Please try again.");
+      setShowModal(true);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -289,19 +314,23 @@ export default function ContactPage() {
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full text-sm sm:text-base py-5 sm:py-6 bg-gradient-primary hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 group"
+                      disabled={isSending}
+                      className="w-full text-sm sm:text-base py-5 sm:py-6 bg-gradient-primary hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 group disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                       <span className="flex items-center justify-center gap-2">
-                        Send Message
-                        <Send className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                        {isSending ? (
+                          <>
+                            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Send Message
+                            <Send className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
                       </span>
                     </Button>
-
-                    {result && (
-                      <p className="text-center text-sm text-muted-foreground mt-4">
-                        {result}
-                      </p>
-                    )}
                   </form>
                 </div>
               </div>
@@ -309,6 +338,69 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      {showModal && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="relative w-full max-w-md rounded-2xl sm:rounded-3xl bg-white p-6 sm:p-8 shadow-2xl animate-in fade-in zoom-in-95 duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setShowModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Icon */}
+            <div className="flex justify-center mb-5">
+              <div
+                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center ${
+                  isSuccess ? "bg-green-100" : "bg-red-100"
+                }`}
+              >
+                {isSuccess ? (
+                  <CheckCircle2 className="w-9 h-9 sm:w-11 sm:h-11 text-green-600" />
+                ) : (
+                  <XCircle className="w-9 h-9 sm:w-11 sm:h-11 text-red-600" />
+                )}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="text-center">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
+                {isSuccess ? "Message Sent!" : "Something Went Wrong"}
+              </h3>
+
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                {isSuccess
+                  ? "Thank you for reaching out. We've received your message and will get back to you as soon as possible."
+                  : result}
+              </p>
+            </div>
+
+            {/* Button */}
+            <button
+              type="button"
+              onClick={() => setShowModal(false)}
+              className={`w-full mt-6 py-3 px-4 rounded-xl font-semibold text-sm sm:text-base text-white transition-all duration-300 ${
+                isSuccess
+                  ? "bg-gradient-primary hover:shadow-lg hover:shadow-primary/25"
+                  : "bg-red-600 hover:bg-red-700"
+              }`}
+            >
+              {isSuccess ? "Done" : "Try Again"}
+            </button>
+          </div>
+        </div>
+      )}
     </PageLayout>
   );
 }
