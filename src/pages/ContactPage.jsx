@@ -386,7 +386,7 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <button
+            <Button
               type="button"
               onClick={() => setShowModal(false)}
               className={`w-full mt-6 py-3 px-4 rounded-xl font-semibold text-sm sm:text-base text-white ${
@@ -396,7 +396,7 @@ export default function ContactPage() {
               }`}
             >
               {isSuccess ? "Done" : "Try Again"}
-            </button>
+            </Button>
           </div>
         </div>
       )}
