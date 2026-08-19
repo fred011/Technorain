@@ -185,7 +185,7 @@ export default function ContactPage() {
                 {/* Business Hours */}
                 <div className="card-elevated rounded-xl sm:rounded-2xl p-4 sm:p-6">
                   <div className="flex items-center gap-3 mb-3 sm:mb-4">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-primary flex items-center justify-center shadow-lg">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#57E325] flex items-center justify-center shadow-lg">
                       <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
                     <h3 className="text-base sm:text-xl font-semibold text-foreground">
@@ -389,11 +389,9 @@ export default function ContactPage() {
             <Button
               type="button"
               onClick={() => setShowModal(false)}
-              className={`w-full mt-6 py-3 px-4 rounded-xl font-semibold text-sm sm:text-base text-white ${
-                isSuccess
-                  ? "bg-gradient-primary hover:shadow-lg hover:shadow-primary/25"
-                  : "bg-red-600 hover:bg-red-700"
-              }`}
+              variant={isSuccess ? "default" : "destructive"}
+              size="lg"
+              className="w-full mt-6 text-sm sm:text-base"
             >
               {isSuccess ? "Done" : "Try Again"}
             </Button>
