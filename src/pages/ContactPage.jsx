@@ -386,11 +386,10 @@ export default function ContactPage() {
               </p>
             </div>
 
-            {/* Button */}
             <button
               type="button"
               onClick={() => setShowModal(false)}
-              className={`w-full mt-6 py-3 px-4 rounded-xl font-semibold text-sm sm:text-base text-white transition-all duration-300 ${
+              className={`w-full mt-6 py-3 px-4 rounded-xl font-semibold text-sm sm:text-base !text-white ${
                 isSuccess
                   ? "bg-gradient-primary hover:shadow-lg hover:shadow-primary/25"
                   : "bg-red-600 hover:bg-red-700"
